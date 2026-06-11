@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Membros da Equipe</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .sobre-info {
+      background: #12141f; border: 1px solid #2a2a3a; border-radius: 10px;
+      padding: 20px 24px; margin-bottom: 28px; display: flex;
+      align-items: center; gap: 18px; flex-wrap: wrap;
+    }
+    .sobre-info-bloco { display: flex; flex-direction: column; gap: 3px; }
+    .sobre-info-label { color: #555; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .sobre-info-valor { color: #eee; font-size: 0.9rem; font-weight: 600; }
+    .sobre-info-valor a { color: #3498db; text-decoration: none; }
+    .sobre-info-valor a:hover { text-decoration: underline; }
+    .divisor-v { width: 1px; height: 40px; background: #2a2a3a; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Analista de Fluxo: </h1>
+    <p class="subtitle">Equipe do Projeto</p>
+  </header>
+
+  <hr class="divisor">
+
+  <!-- Informações do projeto / universidade -->
+  <section style="max-width: 70%; margin: 0 auto 12px;">
+    <div class="sobre-info">
+      <div class="sobre-info-bloco">
+        <span class="sobre-info-label">Universidade</span>
+        <span class="sobre-info-valor">Pontifícia Universidade Católica do Paraná — PUCPR</span>
+      </div>
+      <div class="divisor-v"></div>
+      <div class="sobre-info-bloco">
+        <span class="sobre-info-label">Curso</span>
+        <span class="sobre-info-valor">Engenharia de Software</span>
+      </div>
+      <div class="divisor-v"></div>
+      <div class="sobre-info-bloco">
+        <span class="sobre-info-label">Disciplina</span>
+        <span class="sobre-info-valor">Performance em Sistemas Ciberfísicos — 2026/1</span>
+      </div>
+      <div class="divisor-v"></div>
+      <div class="sobre-info-bloco">
+        <span class="sobre-info-label">Repositório do Projeto</span>
+        <span class="sobre-info-valor">
+          <a href="https://github.com/seu-usuario/analista-de-fluxo" target="_blank">
+            github.com/seu-usuario/analista-de-fluxo
+          </a>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <section class="cards" style="max-width: 70%; margin: 0 auto 40px;">
+    
+    <div class="card membro-card">
+      <img src="/img/Bakugou.jpg" alt="Foto Membro 1" class="membro-foto">
+      <h3 class="card-valor" style="font-size: 1.2rem; margin-bottom: 2px;">Nome do Membro 1</h3>
+      <span class="card-label" style="text-transform: none; margin-bottom: 12px;">membro1@email.com</span>
+      <p class="membro-desc">Breve descrição de como participou do projeto (ex: Desenvolvimento do firmware, montagem de hardware, etc).</p>
+      <div class="membro-links">
+        <a href="https://linkedin.com/in/seu-perfil" target="_blank">LinkedIn</a>
+        <a href="https://github.com/seu-usuario" target="_blank">GitHub</a>
+      </div>
+    </div>
+
+    <div class="card membro-card">
+      <img src="/img/AngryBird.webp" alt="Foto Membro 2" class="membro-foto">
+      <h3 class="card-valor" style="font-size: 1.2rem; margin-bottom: 2px;">Nome do Membro 2</h3>
+      <span class="card-label" style="text-transform: none; margin-bottom: 12px;">membro2@email.com</span>
+      <p class="membro-desc">Breve descrição de como participou do projeto.</p>
+      <div class="membro-links">
+        <a href="#" target="_blank">LinkedIn</a>
+        <a href="#" target="_blank">GitHub</a>
+      </div>
+    </div>
+
+    <div class="card membro-card">
+      <img src="/img/Minion.jpeg" alt="Foto Membro 3" class="membro-foto">
+      <h3 class="card-valor" style="font-size: 1.2rem; margin-bottom: 2px;">Nome do Membro 3</h3>
+      <span class="card-label" style="text-transform: none; margin-bottom: 12px;">membro3@email.com</span>
+      <p class="membro-desc">Breve descrição de como participou do projeto.</p>
+      <div class="membro-links">
+        <a href="#" target="_blank">LinkedIn</a>
+        <a href="#" target="_blank">GitHub</a>
+      </div>
+    </div>
+
+    <div class="card membro-card">
+      <img src="/img/Gonz.webp" alt="Foto Membro 4" class="membro-foto">
+      <h3 class="card-valor" style="font-size: 1.2rem; margin-bottom: 2px;">Nome do Membro 4</h3>
+      <span class="card-label" style="text-transform: none; margin-bottom: 12px;">membro4@email.com</span>
+      <p class="membro-desc">Breve descrição de como participou do projeto.</p>
+      <div class="membro-links">
+        <a href="#" target="_blank">LinkedIn</a>
+        <a href="#" target="_blank">GitHub</a>
+      </div>
+    </div>
+
+    <div class="card membro-card">
+      <img src="/img/TungSahur.webp" alt="Foto Membro 5" class="membro-foto">
+      <h3 class="card-valor" style="font-size: 1.2rem; margin-bottom: 2px;">Nome do Membro 5</h3>
+      <span class="card-label" style="text-transform: none; margin-bottom: 12px;">membro5@email.com</span>
+      <p class="membro-desc">Breve descrição de como participou do projeto.</p>
+      <div class="membro-links">
+        <a href="#" target="_blank">LinkedIn</a>
+        <a href="#" target="_blank">GitHub</a>
+      </div>
+    </div>
+
+  </section>
+
+  <nav class="navegacao">
+    <a href="/membros.html" class="ativo">Membros</a>
+    <a href="/">Dashboard</a>
+    <a href="/graficos.html">Gráficos</a>
+    <a href="/logs.html">Logs</a>
+    <a href="/performance.html">Performance</a>
+    <a href="/configuracao.html">Config</a>
+    <a href="/changelog.html">Changelog</a>
+  </nav>
+
+</body>
+</html>

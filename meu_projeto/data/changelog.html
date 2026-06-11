@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Changelog</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .changelog-lista { list-style: none; padding: 0; margin: 0; }
+    .changelog-entrada {
+      border-left: 3px solid #2a2a3a; padding-left: 20px; margin-bottom: 32px;
+      position: relative;
+    }
+    .changelog-entrada::before {
+      content: ''; width: 10px; height: 10px; border-radius: 50%;
+      background: #3498db; position: absolute; left: -7px; top: 6px;
+    }
+    .changelog-entrada.atual::before { background: #2ecc71; }
+    .changelog-entrada.atual { border-left-color: #2ecc71; }
+    .changelog-versao {
+      display: inline-block; background: #1a2035; color: #3498db;
+      border: 1px solid #3498db; border-radius: 6px;
+      padding: 2px 10px; font-size: 0.82rem; font-weight: 700;
+      margin-right: 8px; font-family: monospace;
+    }
+    .changelog-versao.atual { background: #0d2016; color: #2ecc71; border-color: #2ecc71; }
+    .changelog-data { color: #555; font-size: 0.8rem; }
+    .changelog-titulo { color: #eee; font-size: 1rem; font-weight: 600; margin: 8px 0 4px; }
+    .changelog-itens { padding-left: 18px; margin: 8px 0 0; }
+    .changelog-itens li { color: #aaa; font-size: 0.85rem; line-height: 1.7; }
+    .badge-tipo {
+      display: inline-block; font-size: 0.68rem; font-weight: 700;
+      padding: 1px 6px; border-radius: 4px; margin-right: 4px;
+      vertical-align: middle;
+    }
+    .badge-tipo.novo      { background: rgba(46,204,113,0.2);  color: #2ecc71; }
+    .badge-tipo.melhoria  { background: rgba(52,152,219,0.2);  color: #3498db; }
+    .badge-tipo.correcao  { background: rgba(231,76,60,0.2);   color: #e74c3c; }
+    .badge-tipo.hardware  { background: rgba(155,89,182,0.2);  color: #9b59b6; }
+    .versao-atual-badge {
+      display: inline-block; background: #0d2016; color: #2ecc71;
+      border: 1px solid #2ecc71; border-radius: 4px; padding: 2px 8px;
+      font-size: 0.75rem; font-weight: 700; margin-left: 10px; vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Changelog:</h1>
+    <p class="subtitle">Registro de versionamento<span class="versao-atual-badge">v1.3.0 atual</span></p>
+  </header>
+
+  <hr class="divisor">
+
+  <section style="max-width: 70%; margin: 0 auto 48px;">
+    <p style="color:#666; font-size:0.85rem; margin-bottom: 28px;">
+      Registro de todas as versões e alterações do firmware e interface web do sistema <strong style="color:#eee;">Analista de Fluxo</strong>.
+    </p>
+
+    <ul class="changelog-lista">
+
+      <!-- v1.3.0 — versão atual -->
+      <li class="changelog-entrada atual">
+        <span class="changelog-versao atual">v1.3.0</span>
+        <span class="changelog-data">Junho / 2026</span>
+        <div class="changelog-titulo">Configuração dinâmica, logs com nível e exportação</div>
+        <ul class="changelog-itens">
+          <li><span class="badge-tipo novo">NOVO</span> Página de Configuração (<code>/configuracao.html</code>) com frequência dos sensores e parâmetros operacionais ajustáveis via web sem regravação do firmware.</li>
+          <li><span class="badge-tipo novo">NOVO</span> Endpoint <code>GET/POST /api/config</code> para leitura e escrita dos parâmetros: <code>lotacao_max</code>, <code>sensor_intervalo_ms</code>, <code>cooldown_ms</code>.</li>
+          <li><span class="badge-tipo novo">NOVO</span> Persistência dos parâmetros configuráveis em <code>/config.json</code> no LittleFS — restaurados automaticamente no boot.</li>
+          <li><span class="badge-tipo novo">NOVO</span> Logs com classificação por nível: <strong>ERROR</strong>, <strong>WARN</strong>, <strong>INFO</strong>.</li>
+          <li><span class="badge-tipo novo">NOVO</span> Endpoint <code>/api/logs/export</code> e botão de download dos logs em <code>.txt</code> na interface.</li>
+          <li><span class="badge-tipo novo">NOVO</span> Página de Changelog acessível pela interface gráfica (<code>/changelog.html</code>).</li>
+          <li><span class="badge-tipo melhoria">MELHORIA</span> Filtros por nível de log (ERROR / WARN / INFO / Todos) na página de Logs.</li>
+          <li><span class="badge-tipo melhoria">MELHORIA</span> API de Performance (<code>/api/performance</code>) agora retorna tamanho total e livre da PSRAM quando detectada, além de <code>heap_total</code>.</li>
+          <li><span class="badge-tipo melhoria">MELHORIA</span> Gerenciamento de energia explicitado como Light Sleep automático via FreeRTOS (<code>esp_sleep_enable_timer_wakeup</code>) + Modem Sleep.</li>
+          <li><span class="badge-tipo melhoria">MELHORIA</span> Buffer de logs ampliado de 50 para 100 entradas.</li>
+          <li><span class="badge-tipo melhoria">MELHORIA</span> Navegação atualizada: todas as páginas incluem links para Configuração e Changelog.</li>
+        </ul>
+      </li>
+
+      <!-- v1.2.0 -->
+      <li class="changelog-entrada">
+        <span class="changelog-versao">v1.2.0</span>
+        <span class="changelog-data">Junho / 2026</span>
+        <div class="changelog-titulo">Interface de performance, profiling e Wi-Fi dinâmico</div>
+        <ul class="changelog-itens">
+          <li><span class="badge-tipo novo">NOVO</span> Página <code>/performance.html</code> com guia única de performance: CPU, memória heap/flash, tasks FreeRTOS e profiling de 5 funções.</li>
+          <li><span class="badge-tipo novo">NOVO</span> Endpoint <code>/api/performance</code> com métricas em tempo real de uso de CPU, tempos de execução, informações de tasks e estado Wi-Fi.</li>
+          <li><span class="badge-tipo novo">NOVO</span> Profiling assíncrono por hardware timer (<code>esp_timer_get_time()</code>) das funções: <code>verificarPassagem</code>, <code>verificarEncoder</code>, <code>atualizarDisplay</code>, <code>salvarDados</code>, <code>handleClient</code>.</li>
+          <li><span class="badge-tipo novo">NOVO</span> Configuração e troca do ponto de acesso Wi-Fi via endpoint <code>/api/config_wifi</code> sem regravação de firmware.</li>
+          <li><span class="badge-tipo novo">NOVO</span> Página de membros da equipe (<code>/membros.html</code>).</li>
+          <li><span class="badge-tipo melhoria">MELHORIA</span> Cálculo de uso de CPU separado por core e combinado (Core 0 + Core 1).</li>
+          <li><span class="badge-tipo melhoria">MELHORIA</span> Modem Sleep ativado (<code>WiFi.setSleep(true)</code>) para redução de consumo energético.</li>
+          <li><span class="badge-tipo correcao">CORREÇÃO</span> Conexão Wi-Fi refatorada para modo assíncrono sem bloqueio — elimina uso de <code>while()</code> sem yield durante a conexão.</li>
+        </ul>
+      </li>
+
+      <!-- v1.1.0 -->
+      <li class="changelog-entrada">
+        <span class="changelog-versao">v1.1.0</span>
+        <span class="changelog-data">Maio / 2026</span>
+        <div class="changelog-titulo">Multitarefa com FreeRTOS e persistência de dados</div>
+        <ul class="changelog-itens">
+          <li><span class="badge-tipo novo">NOVO</span> Separação em duas tasks FreeRTOS: <code>TaskSensores</code> (Core 1) e loop principal (Core 0).</li>
+          <li><span class="badge-tipo novo">NOVO</span> Persistência de dados em LittleFS (<code>/dados.json</code>) — salvo automaticamente a cada 30 segundos.</li>
+          <li><span class="badge-tipo novo">NOVO</span> Recuperação automática do histórico no boot.</li>
+          <li><span class="badge-tipo novo">NOVO</span> Endpoint <code>/api/graficos</code> com dados por hora (24h) e por dia (30 dias).</li>
+          <li><span class="badge-tipo novo">NOVO</span> Endpoint <code>/api/upload_dados</code> para restaurar backup de dados via POST.</li>
+          <li><span class="badge-tipo melhoria">MELHORIA</span> Substituição de todos os <code>delay()</code> por <code>vTaskDelay()</code>.</li>
+          <li><span class="badge-tipo hardware">HARDWARE</span> Interrupção de hardware no encoder KY-040 (<code>attachInterrupt</code> + <code>IRAM_ATTR</code>).</li>
+        </ul>
+      </li>
+
+      <!-- v1.0.0 -->
+      <li class="changelog-entrada">
+        <span class="changelog-versao">v1.0.0</span>
+        <span class="changelog-data">Maio / 2026</span>
+        <div class="changelog-titulo">Versão inicial — Sistema Analista de Fluxo</div>
+        <ul class="changelog-itens">
+          <li><span class="badge-tipo novo">NOVO</span> Contagem bidirecional de pessoas com sensores IR E18-D80NK (pinos A e B).</li>
+          <li><span class="badge-tipo novo">NOVO</span> Contagem alternativa via encoder KY-040.</li>
+          <li><span class="badge-tipo novo">NOVO</span> Alertas de áudio via DFPlayer Mini ao atingir 50% e 100% da lotação.</li>
+          <li><span class="badge-tipo novo">NOVO</span> Display OLED SSD1306 com 4 telas rotativas: total atual, entradas/hora, saídas/hora e porcentagem de lotação.</li>
+          <li><span class="badge-tipo novo">NOVO</span> Servidor web embarcado no ESP32 via LittleFS.</li>
+          <li><span class="badge-tipo novo">NOVO</span> Dashboard principal com total de pessoas, entradas/saídas na última hora e hora de pico.</li>
+          <li><span class="badge-tipo novo">NOVO</span> Sincronização de hora via NTP (UTC-3).</li>
+          <li><span class="badge-tipo hardware">HARDWARE</span> Plataforma: ESP32 NodeMCU-32S, Arduino C++ com FreeRTOS.</li>
+        </ul>
+      </li>
+
+    </ul>
+  </section>
+
+  <nav class="navegacao">
+    <a href="/membros.html">Membros</a>
+    <a href="/">Dashboard</a>
+    <a href="/graficos.html">Gráficos</a>
+    <a href="/logs.html">Logs</a>
+    <a href="/performance.html">Performance</a>
+    <a href="/configuracao.html">Config</a>
+    <a href="/changelog.html" class="ativo">Changelog</a>
+  </nav>
+
+  <hr class="divisor">
+
+</body>
+</html>

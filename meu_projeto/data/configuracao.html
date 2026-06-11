@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuração do Sistema</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .config-grupo {
+      background: #12141f; border: 1px solid #2a2a3a; border-radius: 10px;
+      padding: 24px; margin-bottom: 24px;
+    }
+    .config-grupo h3 { color: #3498db; margin-bottom: 4px; font-size: 1rem; }
+    .config-grupo p  { color: #666; font-size: 0.82rem; margin-bottom: 16px; }
+    .config-campo { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+    .config-campo label { color: #ccc; font-size: 0.85rem; font-weight: 600; }
+    .config-campo input {
+      padding: 10px 12px; background: #0f1117; border: 1px solid #2a2a3a;
+      color: #fff; border-radius: 6px; font-size: 0.9rem;
+    }
+    .config-campo input:focus { border-color: #3498db; outline: none; }
+    .config-campo .hint { color: #555; font-size: 0.75rem; }
+    .btn-salvar {
+      padding: 11px 28px; background: #3498db; color: #fff; border: none;
+      border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    .btn-salvar:hover { background: #2980b9; }
+    .feedback {
+      display: none; padding: 10px 16px; border-radius: 6px;
+      margin-top: 12px; font-size: 0.85rem; font-weight: 600;
+    }
+    .feedback.ok    { background: rgba(46,204,113,0.15); color: #2ecc71; border: 1px solid #2ecc71; }
+    .feedback.erro  { background: rgba(231,76,60,0.15);  color: #e74c3c; border: 1px solid #e74c3c; }
+    .valores-atuais { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+    .val-card {
+      background: #0f1117; border: 1px solid #2a2a3a; border-radius: 8px;
+      padding: 10px 16px; text-align: center;
+    }
+    .val-card .label { color: #666; font-size: 0.72rem; text-transform: uppercase; }
+    .val-card .valor { color: #3498db; font-size: 1.1rem; font-weight: 700; margin-top: 4px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Configurações:</h1>
+    <p class="subtitle">Alteração dos parâmetros de recebimento de dados, operacionais e conexão com a Internet</p>
+  </header>
+
+  <hr class="divisor">
+
+  <section style="max-width: 70%; margin: 0 auto 40px;">
+
+    <!-- Valores atuais -->
+    <h2 style="margin-bottom: 12px;">Parâmetros Atuais</h2>
+    <div class="valores-atuais">
+      <div class="val-card">
+        <div class="label">Lotação Máxima</div>
+        <div class="valor" id="val-lotacao">--</div>
+      </div>
+      <div class="val-card">
+        <div class="label">Intervalo dos Sensores</div>
+        <div class="valor" id="val-intervalo">-- ms</div>
+      </div>
+      <div class="val-card">
+        <div class="label">Cooldown do Sensor</div>
+        <div class="valor" id="val-cooldown">-- ms</div>
+      </div>
+    </div>
+
+    <!-- Formulário: Frequência de leitura dos sensores -->
+    <div class="config-grupo">
+      <h3>⏱ Frequência de Leitura dos Sensores</h3>
+      <p>Define o intervalo (em milissegundos) entre cada ciclo de leitura dos sensores IR e Encoder na TaskSensores (Core 1).</p>
+      <div class="config-campo">
+        <label for="input-intervalo">Intervalo da Task Sensores (ms)</label>
+        <input type="number" id="input-intervalo" min="5" max="5000" placeholder="Padrão: 15">
+        <span class="hint">Mín: 5 ms — Máx: 5000 ms. Valores menores = maior responsividade, maior uso de CPU.</span>
+      </div>
+      <div class="config-campo">
+        <label for="input-cooldown">Cooldown após Detecção (ms)</label>
+        <input type="number" id="input-cooldown" min="100" max="10000" placeholder="Padrão: 500">
+        <span class="hint">Tempo de espera após registrar uma passagem antes de aceitar nova detecção.</span>
+      </div>
+      <button class="btn-salvar" onclick="salvarFrequencia()">Salvar Frequência</button>
+      <div class="feedback" id="fb-frequencia"></div>
+    </div>
+
+    <!-- Formulário: Parâmetros operacionais -->
+    <div class="config-grupo">
+      <h3>⚙️ Parâmetros Operacionais</h3>
+      <p>Parâmetros de funcionamento do sistema. Alterações entram em vigor imediatamente e são persistidas no LittleFS.</p>
+      <div class="config-campo">
+        <label for="input-lotacao">Lotação Máxima (pessoas)</label>
+        <input type="number" id="input-lotacao" min="1" max="10000" placeholder="Padrão: 100">
+        <span class="hint">Capacidade máxima do espaço. O áudio de alerta dispara ao atingir 50% e 100% deste valor.</span>
+      </div>
+      <button class="btn-salvar" onclick="salvarParametros()">Salvar Parâmetros</button>
+      <div class="feedback" id="fb-parametros"></div>
+    </div>
+
+    <!-- Configuração Wi-Fi (movida para cá também, por completude) -->
+    <div class="config-grupo">
+      <h3>📶 Credenciais de Rede Wi-Fi</h3>
+      <p>Altera o ponto de acesso Wi-Fi sem necessidade de regravação do firmware. O ESP32 reconecta de forma assíncrona.</p>
+      <div class="config-campo">
+        <label for="input-ssid">SSID da Rede</label>
+        <input type="text" id="input-ssid" placeholder="Nome da rede Wi-Fi">
+      </div>
+      <div class="config-campo">
+        <label for="input-senha">Senha WPA2</label>
+        <input type="password" id="input-senha" placeholder="Senha da rede">
+      </div>
+      <button class="btn-salvar" onclick="salvarWifi()">Atualizar Wi-Fi</button>
+      <div class="feedback" id="fb-wifi"></div>
+    </div>
+
+  </section>
+
+  <nav class="navegacao">
+    <a href="/membros.html">Membros</a>
+    <a href="/">Dashboard</a>
+    <a href="/graficos.html">Gráficos</a>
+    <a href="/logs.html">Logs</a>
+    <a href="/performance.html">Performance</a>
+    <a href="/configuracao.html" class="ativo">Config</a>
+    <a href="/changelog.html">Changelog</a>
+  </nav>
+
+  <hr class="divisor">
+
+  <script>
+    function mostrarFeedback(id, msg, ok) {
+      const el = document.getElementById(id);
+      el.textContent = msg;
+      el.className = 'feedback ' + (ok ? 'ok' : 'erro');
+      el.style.display = 'block';
+      setTimeout(() => { el.style.display = 'none'; }, 4000);
+    }
+
+    async function carregarValoresAtuais() {
+      try {
+        const res    = await fetch('/api/config');
+        const config = await res.json();
+        document.getElementById('val-lotacao').textContent  = config.lotacao_max;
+        document.getElementById('val-intervalo').textContent = config.sensor_intervalo_ms + ' ms';
+        document.getElementById('val-cooldown').textContent  = config.cooldown_ms + ' ms';
+        // Preenche os campos com valores atuais
+        document.getElementById('input-lotacao').value   = config.lotacao_max;
+        document.getElementById('input-intervalo').value = config.sensor_intervalo_ms;
+        document.getElementById('input-cooldown').value  = config.cooldown_ms;
+      } catch (e) {
+        console.error('Erro ao carregar config:', e);
+      }
+    }
+
+    async function salvarFrequencia() {
+      const intervalo = document.getElementById('input-intervalo').value;
+      const cooldown  = document.getElementById('input-cooldown').value;
+      if (!intervalo && !cooldown) { mostrarFeedback('fb-frequencia', 'Preencha ao menos um campo.', false); return; }
+      const params = new URLSearchParams();
+      if (intervalo) params.append('sensor_intervalo_ms', intervalo);
+      if (cooldown)  params.append('cooldown_ms', cooldown);
+      try {
+        const res  = await fetch('/api/config', { method: 'POST', body: params });
+        const data = await res.json();
+        mostrarFeedback('fb-frequencia', data.msg, data.status === 'ok');
+        if (data.status === 'ok') carregarValoresAtuais();
+      } catch (e) {
+        mostrarFeedback('fb-frequencia', 'Erro de comunicação com o ESP32.', false);
+      }
+    }
+
+    async function salvarParametros() {
+      const lotacao = document.getElementById('input-lotacao').value;
+      if (!lotacao) { mostrarFeedback('fb-parametros', 'Informe a lotação máxima.', false); return; }
+      const params = new URLSearchParams();
+      params.append('lotacao_max', lotacao);
+      try {
+        const res  = await fetch('/api/config', { method: 'POST', body: params });
+        const data = await res.json();
+        mostrarFeedback('fb-parametros', data.msg, data.status === 'ok');
+        if (data.status === 'ok') carregarValoresAtuais();
+      } catch (e) {
+        mostrarFeedback('fb-parametros', 'Erro de comunicação com o ESP32.', false);
+      }
+    }
+
+    async function salvarWifi() {
+      const ssid  = document.getElementById('input-ssid').value;
+      const senha = document.getElementById('input-senha').value;
+      if (!ssid || !senha) { mostrarFeedback('fb-wifi', 'Preencha SSID e senha.', false); return; }
+      try {
+        const res  = await fetch(`/api/config_wifi?ssid=${encodeURIComponent(ssid)}&password=${encodeURIComponent(senha)}`, { method: 'POST' });
+        const text = await res.text();
+        mostrarFeedback('fb-wifi', text, res.ok);
+      } catch (e) {
+        mostrarFeedback('fb-wifi', 'Erro de comunicação com o ESP32.', false);
+      }
+    }
+
+    carregarValoresAtuais();
+    setInterval(carregarValoresAtuais, 10000);
+  </script>
+
+</body>
+</html>

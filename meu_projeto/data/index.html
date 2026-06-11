@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>Dashboard: </h1>
+    <p class="subtitle">Guia de Monitoramento em tempo real do Fluxo de individuos no ambiente</p>
+  </header>
+
+  <hr class="divisor">
+
+  <div id="aviso-lotacao" class="aviso-lotacao oculto">
+    ⚠️ Lotação máxima atingida!
+  </div>
+
+  <section style="padding: 0 20px 24px;">
+    
+    <div style="background-color: #11131e; border: 1px solid #2a2a3a; border-radius: 16px; padding: 24px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); max-width: 70%; margin: 0 auto;">
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        
+        <div class="card" style="border-left: 4px solid #3498db;">
+          <span class="card-label ">Pessoas no espaço</span>
+          <span class="card-valor" id="total">--</span>
+        </div>
+
+        <div class="card" style="border-left: 4px solid #3498db;">
+          <span class="card-label">Entradas na última hora</span>
+          <span class="card-valor" id="entradas1h">--</span>
+        </div>
+
+        <div class="card" style="border-left: 4px solid #3498db;">
+          <span class="card-label">Saídas na última hora</span>
+          <span class="card-valor" id="saidas1h">--</span>
+        </div>
+
+        <div class="card" style="border-left: 4px solid #3498db;">
+          <span class="card-label">Lotação ocupada</span>
+          <span class="card-valor" id="porcentagem">--%</span>
+          <div class="barra-fundo">
+            <div class="barra-progresso" id="barra-progresso"></div>
+          </div>
+        </div>
+
+        <div class="card" style="grid-column: 1 / -1; max-width: 450px; width: 100%; justify-self: center; border-left: 4px solid #3498db;">
+          <span class="card-label">Horário mais cheio (últimas 24h)</span>
+          <span class="card-valor" id="hora-mais-cheia">--:00</span>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <nav class="navegacao">
+    <a href="/membros.html">Membros</a>
+    <a href="/" class="ativo">Dashboard</a>
+    <a href="/graficos.html">Gráficos</a>
+    <a href="/logs.html">Logs</a>
+    <a href="/performance.html">Performance</a>
+    <a href="/configuracao.html">Config</a>
+    <a href="/changelog.html">Changelog</a>
+  </nav>
+
+  <script>
+    async function atualizarDashboard() {
+      try {
+        const res  = await fetch('/api/status');
+        const data = await res.json();
+
+        document.getElementById('total').textContent       = data.total;
+        document.getElementById('entradas1h').textContent  = data.entradas1h;
+        document.getElementById('saidas1h').textContent    = data.saidas1h;
+        document.getElementById('porcentagem').textContent = data.porcentagem + '%';
+        document.getElementById('hora-mais-cheia').textContent = data.horaMaisCheia + ':00';
+
+        const pct   = Math.min(data.porcentagem, 100);
+        const barra = document.getElementById('barra-progresso');
+        barra.style.width = pct + '%';
+        barra.style.backgroundColor =
+          pct >= 100 ? '#e74c3c' :
+          pct >= 50  ? '#f39c12' : '#2ecc71';
+
+        const aviso = document.getElementById('aviso-lotacao');
+        if (data.total >= data.lotacaoMax) {
+          aviso.classList.remove('oculto');
+        } else {
+          aviso.classList.add('oculto');
+        }
+
+      } catch (e) {
+        console.error('Erro ao buscar status:', e);
+      }
+    }
+
+    atualizarDashboard();
+    setInterval(atualizarDashboard, 5000); // atualiza a cada 5 segundos
+  </script>
+
+</body>
+</html>
