@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sobre o Projeto e Equipe</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* ===== Seção "Sobre o Projeto" ===== */
+    .sobre-card {
+      background: #1a1d2e; border: 1px solid #2a2a3a; border-radius: 14px;
+      padding: 32px; margin: 0 auto 32px; max-width: 70%;
+    }
+    .sobre-card h2 {
+      color: #fff; font-size: 1.6rem; margin: 0 0 6px;
+    }
+    .sobre-card .sobre-tagline {
+      color: #3498db; font-size: 0.95rem; font-weight: 600;
+      margin: 0 0 24px; letter-spacing: 0.3px;
+    }
+    .sobre-conteudo {
+      display: flex; gap: 28px; align-items: flex-start; flex-wrap: wrap;
+    }
+    /* Espaço reservado para a imagem final do projeto */
+    .sobre-imagem {
+      flex: 1 1 280px; min-width: 260px;
+    }
+    .sobre-imagem img {
+      width: 100%; border-radius: 10px; display: block;
+      border: 1px solid #2a2a3a;
+    }
+    .sobre-imagem-placeholder {
+      width: 100%; aspect-ratio: 4 / 3; border-radius: 10px;
+      border: 2px dashed #2a2a3a; background: #12141f;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 8px; color: #555; text-align: center;
+      padding: 16px;
+    }
+    .sobre-imagem-placeholder span { font-size: 0.82rem; }
+    .sobre-imagem-legenda {
+      color: #555; font-size: 0.74rem; text-align: center; margin-top: 8px;
+    }
+    .sobre-texto { flex: 2 1 340px; min-width: 300px; }
+    .sobre-texto p {
+      color: #b0b0c0; font-size: 0.95rem; line-height: 1.65; margin: 0 0 14px;
+    }
+    /* Grid de destaques técnicos */
+    .sobre-destaques {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 14px; margin-top: 22px;
+    }
+    .destaque-item {
+      background: #12141f; border: 1px solid #2a2a3a; border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .destaque-item .destaque-label {
+      color: #555; font-size: 0.7rem; text-transform: uppercase;
+      letter-spacing: 0.5px; display: block; margin-bottom: 4px;
+    }
+    .destaque-item .destaque-valor {
+      color: #eee; font-size: 0.92rem; font-weight: 600;
+    }
+
+    /* ===== Faixa de metadados (universidade/curso/etc) ===== */
+    .sobre-info {
+      background: #12141f; border: 1px solid #2a2a3a; border-radius: 10px;
+      padding: 20px 24px; margin-bottom: 28px; display: flex;
+      align-items: center; gap: 18px; flex-wrap: wrap;
+    }
+    .sobre-info-bloco { display: flex; flex-direction: column; gap: 3px; }
+    .sobre-info-label { color: #555; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .sobre-info-valor { color: #eee; font-size: 0.9rem; font-weight: 600; }
+    .sobre-info-valor a { color: #3498db; text-decoration: none; }
+    .sobre-info-valor a:hover { text-decoration: underline; }
+    .divisor-v { width: 1px; height: 40px; background: #2a2a3a; flex-shrink: 0; }
+
+    /* Título da seção de equipe */
+    .secao-titulo {
+      max-width: 70%; margin: 0 auto 18px;
+    }
+    .secao-titulo h2 { color: #fff; font-size: 1.5rem; margin: 0 0 4px; }
+    .secao-titulo p { color: #888; font-size: 0.9rem; margin: 0; }
+
+    @media (max-width: 900px) {
+      .sobre-card, .sobre-info, .secao-titulo,
+      .cards { max-width: 92% !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Analista de Fluxo</h1>
+    <p class="subtitle">Sobre o Projeto e Equipe</p>
+  </header>
+
+  <hr class="divisor">
+
+  <!-- ====================================================== -->
+  <!-- SEÇÃO 1 — SOBRE O PROJETO                              -->
+  <!-- ====================================================== -->
+  <div class="sobre-card">
+    <h2>Sobre o Projeto</h2>
+    <p class="sobre-tagline">Sistema embarcado de monitoramento de fluxo de pessoas em tempo real</p>
+
+    <div class="sobre-conteudo">
+      <!-- Espaço para a imagem final do projeto -->
+      <div class="sobre-imagem">
+          <img src="img/projetoFinal.jpg" alt="Foto do projeto montado">
+      </div> 
+      <!-- Descrição do projeto -->
+      <div class="sobre-texto">
+        <p>
+          O <strong>Analista de Fluxo</strong> é um sistema embarcado baseado em ESP32 que
+          monitora a entrada e saída de pessoas ou indivíduos em um ambiente, calcula a lotação em tempo real e disponibiliza todas as informações através de um servidor web próprio,
+          acessível por qualquer dispositivo na mesma rede.
+        </p>
+        <p>
+          A contagem é feita por sensores infravermelhos de passagem e por uma catraca
+          com encoder rotativo. Quando determinados limites de ocupação são atingidos, o
+          sistema emite avisos sonoros e exibe o status em um display OLED. Todos os dados
+          de movimentação, gráficos históricos e logs do sistema são persistidos localmente,
+          sobrevivendo a reinicializações e quedas de energia.
+        </p>
+        <p>
+          O projeto explora conceitos de sistemas ciberfísicos e desempenho: uso de
+          <strong>FreeRTOS</strong> com tarefas distribuídas entre os dois núcleos do ESP32,
+          medição de tempo de execução de cada rotina e monitoramento de uso de CPU e memória.
+        </p>
+
+        <div class="sobre-destaques">
+          <div class="destaque-item">
+            <span class="destaque-label">Microcontrolador</span>
+            <span class="destaque-valor">ESP32 (dual-core)</span>
+          </div>
+          <div class="destaque-item">
+            <span class="destaque-label">Sistema</span>
+            <span class="destaque-valor">FreeRTOS</span>
+          </div>
+          <div class="destaque-item">
+            <span class="destaque-label">Sensores</span>
+            <span class="destaque-valor">IR E18-D80NK + Encoder KY-040</span>
+          </div>
+          <div class="destaque-item">
+            <span class="destaque-label">Atuadores</span>
+            <span class="destaque-valor">OLED SSD1306 + DFPlayer Mini</span>
+          </div>
+          <div class="destaque-item">
+            <span class="destaque-label">Persistência</span>
+            <span class="destaque-valor">LittleFS (dados, gráficos e logs)</span>
+          </div>
+          <div class="destaque-item">
+            <span class="destaque-label">Interface</span>
+            <span class="destaque-valor">Servidor web + NTP</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Faixa de informações acadêmicas -->
+  <section style="max-width: 70%; margin: 0 auto 12px;">
+    <div class="sobre-info">
+      <div class="sobre-info-bloco">
+        <span class="sobre-info-label">Universidade</span>
+        <span class="sobre-info-valor">Pontifícia Universidade Católica do Paraná — PUCPR</span>
+      </div>
+      <div class="divisor-v"></div>
+      <div class="sobre-info-bloco">
+        <span class="sobre-info-label">Curso</span>
+        <span class="sobre-info-valor">Engenharia de Software</span>
+      </div>
+      <div class="divisor-v"></div>
+      <div class="sobre-info-bloco">
+        <span class="sobre-info-label">Disciplina</span>
+        <span class="sobre-info-valor">Performance em Sistemas Ciberfísicos — 2026/1</span>
+      </div>
+      <div class="divisor-v"></div>
+      <div class="sobre-info-bloco">
+        <span class="sobre-info-label">Repositório do Projeto</span>
+        <span class="sobre-info-valor">
+          <a href="https://github.com/JoaoVictor9805/Esp32Performance.git" target="_blank">
+            github.com/JoaoVictor9805/Esp32Performance
+          </a>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================== -->
+  <!-- DIVISOR ENTRE AS DUAS SEÇÕES                           -->
+  <!-- ====================================================== -->
+  <hr class="divisor">
+
+  <!-- ====================================================== -->
+  <!-- SEÇÃO 2 — MEMBROS DA EQUIPE                            -->
+  <!-- ====================================================== -->
+  <div class="secao-titulo">
+    <h2>Membros da Equipe</h2>
+    <p>Quem desenvolveu o projeto</p>
+  </div>
+
+  <section class="cards" style="max-width: 70%; margin: 0 auto 40px;">
+
+    <div class="card membro-card">
+      <img src="/img/brunoMartinsParizotto.jpeg" alt="Foto Membro 1" class="membro-foto">
+      <h3 class="card-valor" style="font-size: 1.2rem; margin-bottom: 2px;">Bruno Martins Parizotto</h3>
+      <span class="card-label" style="text-transform: none; margin-bottom: 12px;">bruno.parizotto@pucpr.edu.br</span>
+      <p class="membro-desc">Desenvolveu o site embarcado e as suas páginas: painel, gráficos, logs, configuração e sobre. Também ficou responsável pela implementação física da estrutura externa do projeto e montagem.</p>
+      <div class="membro-links">
+        <a href="https://www.linkedin.com/in/bruno-parizotto-09527a362/" target="_blank">LinkedIn</a>
+        <a href="https://github.com/brunompz" target="_blank">GitHub</a>
+      </div>
+    </div>
+
+    <div class="card membro-card">
+      <img src="/img/israelChristian.jpg" alt="Foto Membro 2" class="membro-foto">
+      <h3 class="card-valor" style="font-size: 1.2rem; margin-bottom: 2px;">Israel Cristhian de Oliveira</h3>
+      <span class="card-label" style="text-transform: none; margin-bottom: 12px;">israel.cristhian@pucpr.edu.br</span>
+      <p class="membro-desc">Desenvolveu o site embarcado e todas as suas páginas: painel, gráficos, logs, configuração e sobre.</p>
+      <div class="membro-links">
+        <a href="https://www.linkedin.com/in/iscris/" target="_blank">LinkedIn</a>
+        <a href="https://github.com/EATcement" target="_blank">GitHub</a>
+      </div>
+    </div>
+
+    <div class="card membro-card">
+      <img src="/img/joaoVictorCzech.jpg" alt="Foto Membro 3" class="membro-foto">
+      <h3 class="card-valor" style="font-size: 1.2rem; margin-bottom: 2px;">João Victor Czech Oliveira</h3>
+      <span class="card-label" style="text-transform: none; margin-bottom: 12px;">joao.czech@pucpr.edu.br</span>
+      <p class="membro-desc">Montou a estrutura principal do código, organizando o sistema para rodar várias tarefas ao mesmo tempo sem travar. Responsável por salvar e manter os dados e logs do sistema.</p>
+      <div class="membro-links">
+        <a href="https://www.linkedin.com/in/jo%C3%A3o-victor-czech-oliveira-a5391a377/" target="_blank">LinkedIn</a>
+        <a href="https://github.com/JoaoVictor9805" target="_blank">GitHub</a>
+      </div>
+    </div>
+
+    <div class="card membro-card">
+      <img src="/img/marianaSchneider.jpg" alt="Foto Membro 4" class="membro-foto">
+      <h3 class="card-valor" style="font-size: 1.2rem; margin-bottom: 2px;">Mariana Schneider Sobrinho</h3>
+      <span class="card-label" style="text-transform: none; margin-bottom: 12px;">sobrinho.mariana@pucpr.edu.br</span>
+      <p class="membro-desc">Cuidou da economia de energia e da escrita do trabalho nas normas da ABNT, além da implementação física da estrutura externa do projeto e montagem.</p>
+      <div class="membro-links">
+        <a href="https://www.linkedin.com/in/mariana-schneider-sobrinho-230302348/" target="_blank">LinkedIn</a>
+        <a href="https://github.com/schnmari" target="_blank">GitHub</a>
+      </div>
+    </div>
+
+    <div class="card membro-card">
+      <img src="/img/rafaelCostaPacheco.jpg" alt="Foto Membro 5" class="membro-foto">
+      <h3 class="card-valor" style="font-size: 1.2rem; margin-bottom: 2px;">Rafael Costa Pacheco</h3>
+      <span class="card-label" style="text-transform: none; margin-bottom: 12px;">pacheco.costa@pucpr.edu.br</span>
+      <p class="membro-desc">Cuidou da parte física: os sensores de passagem, a catraca, o display e o som.</p>
+      <div class="membro-links">
+        <a href="https://www.linkedin.com/in/rafael-costa-pacheco-320424313/" target="_blank">LinkedIn</a>
+        <a href="https://github.com/Enderlandz" target="_blank">GitHub</a>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ====================================================== -->
+  <!-- DIVISOR ANTES DA SEÇÃO DE FERRAMENTAS                  -->
+  <!-- ====================================================== -->
+  <hr class="divisor">
+ 
+  <!-- ====================================================== -->
+  <!-- SEÇÃO 3 — IAs E FERRAMENTAS EXTERNAS UTILIZADAS        -->
+  <!-- ====================================================== -->
+  <div class="secao-titulo">
+    <h2>IAs e Ferramentas Externas Utilizadas</h2>
+    <p>Recursos de apoio empregados durante o desenvolvimento</p>
+  </div>
+ 
+  <section class="cards" style="max-width: 70%; margin: 0 auto 40px;">
+ 
+    <div class="card ferramenta-card">
+      <div class="ferramenta-icone">🤖</div>
+      <h3>Claude (Anthropic)</h3>
+      <span class="ferramenta-tipo">Assistente de IA</span>
+      <p class="ferramenta-desc">Apoio na revisão de código do firmware, depuração de problemas de hardware, organização da interface web correção de bugs e inconsistencias de software. </p>
+    </div>
+ 
+    <div class="card ferramenta-card">
+      <div class="ferramenta-icone">💬</div>
+      <h3>Gemini (Google)</h3>
+      <span class="ferramenta-tipo">Assistente de IA</span>
+      <p class="ferramenta-desc">Consultas pontuais sobre conceitos de FreeRTOS, dúvidas de programação, depuração de problemas de hardware, melhoria na identidade visual da interface web, apoio na redação do trabalho.</p>
+    </div>
+
+    <div class="card ferramenta-card">
+      <div class="ferramenta-icone">⚙️</div>
+      <h3>Arduino IDE</h3>
+      <span class="ferramenta-tipo">Ambiente de Desenvolvimento</span>
+      <p class="ferramenta-desc">Compilação, gravação do firmware no ESP32 e monitoramento via Serial Monitor durante os testes.</p>
+    </div>
+ 
+    <div class="card ferramenta-card">
+      <div class="ferramenta-icone">🐙</div>
+      <h3>GitHub</h3>
+      <span class="ferramenta-tipo">Controle de Versão</span>
+      <p class="ferramenta-desc">Versionamento do código, colaboração entre os integrantes e hospedagem pública do repositório.</p>
+    </div>
+ 
+    <div class="card ferramenta-card">
+      <div class="ferramenta-icone">🎬</div>
+      <h3>YouTube</h3>
+      <span class="ferramenta-tipo">Videos tutoriais e pesquisas</span>
+      <p class="ferramenta-desc">Guia para implementação física, entendimento dos módulos e revisão de problemas</p>
+    </div>
+
+  </section>
+
+
+  <nav class="navegacao">
+    <a href="/membros.html" class="ativo">Sobre</a>
+    <a href="/">Dashboard</a>
+    <a href="/graficos.html">Gráficos</a>
+    <a href="/logs.html">Logs</a>
+    <a href="/performance.html">Performance</a>
+    <a href="/configuracao.html">Config</a>
+    <a href="/changelog.html">Changelog</a>
+  </nav>
+
+</body>
+</html>

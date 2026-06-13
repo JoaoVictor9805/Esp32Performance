@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Performance do Sistema</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <header>
+    <h1>Performance: </h1>
+    <p class="subtitle">Desempenho Ciberfísico - Guia Única de Performance & Observabilidade</p>
+  </header>
+
+  <hr class="divisor"><br>
+
+  <section class="cards" style="max-width: 70%; margin: 0 auto 24px;">
+    <div class="card" style="border-left: 4px solid #2ecc71;">
+      <span class="card-label">Dados dos Sensores (Lotação Atual)</span>
+      <span class="card-valor" id="perf-sensor-total" style="color: #2ecc71;">--</span>
+    </div>
+    <div class="card" style="border-left: 4px solid #e74c3c;">
+      <span class="card-label">Movimentação Bruta (Última 1h)</span>
+      <span class="card-valor" id="perf-sensor-mov" style="font-size: 1.5rem; margin-top: 10px;">-- In / -- Out</span>
+    </div>
+  </section>
+
+  
+  <hr class="divisor"><br>
+
+  <section class="cards" style="max-width: 70%; margin: 0 auto 24px;">
+    <div class="card" style="border-left: 4px solid #3498db;">
+      <span class="card-label">Uso de CPU Ativo</span>
+      <span class="card-valor" id="perf-uso-cpu" style="color: #3498db;">-- %</span>
+    </div>
+    <div class="card">
+      <span class="card-label">Clock do Processador</span>
+      <span class="card-valor" id="perf-cpu">-- MHz</span>
+    </div>
+    <div class="card">
+      <span class="card-label">Heap Livre / Total</span>
+      <span class="card-valor" id="perf-heap">-- KB</span>
+    </div>
+    <div class="card">
+      <span class="card-label">Armazenamento Flash</span>
+      <span class="card-valor" id="perf-flash" >-- MB</span>
+    </div>
+    <div class="card" style="border-left: 4px solid #ffdb57;">
+      <span class="card-label">Gerenciamento de Energia</span>
+      <span class="card-valor" id="perf-energia" style="font-size: 1rem; color: #ffdb57;">--</span>
+    </div>
+  </section>
+
+  <section class="cards" style="max-width: 70%; margin: 0 auto 24px;">
+    <div class="card" style="border-left: 4px solid #9b59b6;">
+      <span class="card-label">Stack (High Water Mark — Core 0)</span>
+      <span class="card-valor" id="perf-stack-c0" style="color: #9b59b6;">-- B</span>
+    </div>
+    <div class="card" style="border-left: 4px solid #9b59b6;">
+      <span class="card-label">Stack (High Water Mark — Core 1)</span>
+      <span class="card-valor" id="perf-stack-c1" style="color: #9b59b6;">-- B</span>
+    </div>
+    <div class="card" id="card-psram" style="border-left: 4px solid #dd6300;">
+      <span class="card-label">PSRAM Livre / Total</span>
+      <span class="card-valor" id="perf-psram" style="color: #dd6300;">Verificando...</span>
+    </div>
+    <div class="card" style="border-left: 4px solid #2ecc71;">
+      <span class="card-label">Módulo de Conexão</span>
+      <span class="card-valor" id="wifi-ap-string" style="color: #2ecc71; font-size: 0.95rem; line-height: 1.4; margin-top: 5px;">Carregando redes...</span>
+    </div>
+  </section>
+
+  <section class="grafico-secao" style="max-width: 70%; margin: 0 auto 24px;">
+    <h2>Tempo de Execução de Funções (Profiling Assíncrono)</h2>
+    <p class="grafico-descricao">Métricas coletadas via Hardware Timer interno em microssegundos (µs)</p>
+    <div class="grafico-container">
+      <canvas id="chart-profiling"></canvas>
+    </div>
+  </section>
+
+  <section class="log-secao" style="max-width: 70%; margin: 0 auto 24px;">
+    <div class="log-header">
+      <h2>Estrutura de Tarefas do Kernel (FreeRTOS)</h2>
+    </div>
+    <p class="grafico-descricao">Análise de concorrência e alocação preventiva de stack das tasks</p>
+    <div class="log-container">
+      <table class="tabela-historico" style="width: 100%;">
+        <thead>
+          <tr>
+            <th>Identificador da Task</th>
+            <th>Núcleo (Core)</th>
+            <th>Prioridade</th>
+            <th>Stack Mínimo Restante</th>
+          </tr>
+        </thead>
+        <tbody id="table-tasks-rows">
+          <tr><td colspan="4" class="log-vazio">Buscando métricas de threads...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divisor">
+
+
+
+  <nav class="navegacao">
+    <a href="/membros.html">Sobre</a>
+    <a href="/">Dashboard</a>
+    <a href="/graficos.html">Gráficos</a>
+    <a href="/logs.html">Logs</a>
+    <a href="/performance.html" class="ativo">Performance</a>
+    <a href="/configuracao.html">Config</a>
+    <a href="/changelog.html">Changelog</a>
+  </nav>
+
+  <script>
+    const timelineLabels = [];
+    const datasetRegistries = {
+      verificarPassagem: [],
+      verificarEncoder:  [],
+      atualizarDisplay:  [],
+      salvarDados:       [],
+      handleClient:      []
+    };
+
+    const ctxProfiling = document.getElementById('chart-profiling').getContext('2d');
+    const chartProfiling = new Chart(ctxProfiling, {
+      type: 'line',
+      data: {
+        labels: timelineLabels,
+        datasets: [
+          { label: 'verificarPassagem()', data: datasetRegistries.verificarPassagem, borderColor: '#2ecc71', borderWidth: 2, fill: false, tension: 0.2 },
+          { label: 'verificarEncoder()',  data: datasetRegistries.verificarEncoder,  borderColor: '#e74c3c', borderWidth: 2, fill: false, tension: 0.2 },
+          { label: 'atualizarDisplay()',  data: datasetRegistries.atualizarDisplay,  borderColor: '#f39c12', borderWidth: 2, fill: false, tension: 0.2 },
+          { label: 'salvarDados()',       data: datasetRegistries.salvarDados,       borderColor: '#9b59b6', borderWidth: 2, fill: false, tension: 0.2 },
+          { label: 'handleClient()',      data: datasetRegistries.handleClient,      borderColor: '#3498db', borderWidth: 2, fill: false, tension: 0.2 }
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { title: { display: true, text: 'Tempo de Execução (µs)', color: '#888' }, beginAtZero: true }
+        },
+        plugins: { legend: { labels: { color: '#fff' } } }
+      }
+    });
+
+    async function coletarDadosPerformance() {
+      try {
+        const response = await fetch('/api/performance');
+        const metrics  = await response.json();
+
+        const responseStatus = await fetch('/api/status');
+        const statusData = await responseStatus.json();
+
+        // Sensores
+        document.getElementById('perf-sensor-total').textContent = statusData.total + ' pessoas';
+        document.getElementById('perf-sensor-mov').textContent = statusData.entradas1h + ' In / ' + statusData.saidas1h + ' Out';
+
+        // CPU e Memória Geral
+        document.getElementById('perf-uso-cpu').textContent = metrics.uso_cpu + ' %';
+        document.getElementById('perf-cpu').textContent     = metrics.cpu_freq + ' MHz';
+        document.getElementById('perf-heap').textContent    =
+          Math.round(metrics.heap_livre / 1024) + ' KB / ' + Math.round(metrics.heap_total / 1024) + ' KB';
+        document.getElementById('perf-flash').textContent   = Math.round(metrics.flash_total / (1024 * 1024)) + ' MB';
+        document.getElementById('perf-energia').textContent = metrics.energia_modo;
+        document.getElementById('wifi-ap-string').textContent = metrics.wifi_status;
+
+        // PSRAM
+        if (metrics.psram_detectada) {
+          document.getElementById('perf-psram').textContent =
+            Math.round(metrics.psram_livre / 1024) + ' KB / ' + Math.round(metrics.psram_total / 1024) + ' KB';
+        } else {
+          document.getElementById('perf-psram').textContent = 'Não presente';
+          document.getElementById('perf-psram').style.color = '#555';
+        }
+
+        // Stack
+        if (metrics.tasks && metrics.tasks.length >= 2) {
+          const c0 = metrics.tasks.find(t => t.core === 0);
+          const c1 = metrics.tasks.find(t => t.core === 1);
+          if (c0) document.getElementById('perf-stack-c0').textContent = c0.stack_min_garantido + ' B restantes';
+          if (c1) document.getElementById('perf-stack-c1').textContent = c1.stack_min_garantido + ' B restantes';
+        }
+
+        // Tabela de Tasks
+        const tableBody = document.getElementById('table-tasks-rows');
+        tableBody.innerHTML = metrics.tasks.map(task => `
+          <tr>
+            <td><strong>${task.nome}</strong></td>
+            <td>Núcleo ${task.core}</td>
+            <td>Prioridade ${task.prioridade}</td>
+            <td>${task.stack_min_garantido} Bytes</td>
+          </tr>
+        `).join('');
+
+        // Gráfico Profiling
+        const tempoAtual = new Date().toLocaleTimeString();
+        if (timelineLabels.length > 12) {
+          timelineLabels.shift();
+          Object.values(datasetRegistries).forEach(d => d.shift());
+        }
+
+        timelineLabels.push(tempoAtual);
+        datasetRegistries.verificarPassagem.push(metrics.tempos_funcoes.verificarPassagem);
+        datasetRegistries.verificarEncoder.push(metrics.tempos_funcoes.verificarEncoder);
+        datasetRegistries.atualizarDisplay.push(metrics.tempos_funcoes.atualizarDisplay);
+        datasetRegistries.salvarDados.push(metrics.tempos_funcoes.salvarDados);
+        datasetRegistries.handleClient.push(metrics.tempos_funcoes.handleClient);
+        chartProfiling.update();
+
+      } catch (err) {
+        console.error('Erro ao coletar métricas:', err);
+      }
+    }
+
+    setInterval(coletarDadosPerformance, 3000);
+    coletarDadosPerformance();
+  </script>
+</body>
+</html>
