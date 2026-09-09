@@ -234,4 +234,4 @@ Este projeto foi desenvolvido para fins acadêmicos, como trabalho da disciplina
 
 ## 🤖 Uso de inteligência artificial
 
-O uso de inteligência artificial foi realizado para auxiliar no desenvolvimento do projeto, apoiando a revisão de código do firmware, a depuração de problemas de hardware e a organização da interface web. Os códigos produzidos foram revisados e analisados pelos desenvolvedores, na busca de validar sua qualidade. Os principais recursos de apoio utilizados foram: Claude (Anthropic), Gemini (Google), Arduino IDE, GitHub e tutoriais em vídeo no YouTube.
+O uso de inteligência artificial foi realizado para auxiliar no desenvolvimento do projeto, apoiando a revisão de código do firmware, a depuração de problemas de hardware e a organização da interface web. Os códigos produzidos foram revisados e analisados pelos desenvolvedores, na busca de validar sua qualidade. Os principais recursos de apoio utilizados foram: Claude (Anthropic), Gemini (Google) e ChatGPT (OpenAI)
