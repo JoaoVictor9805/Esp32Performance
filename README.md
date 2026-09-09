@@ -36,17 +36,17 @@ ESP32, protoboard de conexões e o alto-falante utilizado para os alertas sonoro
 
 ## ✨ Funcionalidades
 
-- 🚶 Contagem de pessoas em tempo real via sensores infravermelhos de passagem (entrada/saída)
-- 🎡 Contagem redundante via catraca com encoder rotativo
-- 🔊 Alertas sonoros (DFPlayer Mini) ao atingir 50% e 100% da lotação máxima
-- 🖥️ Display OLED local com rotação automática de telas (total, entradas, saídas, lotação)
-- 🌐 Dashboard web com lotação atual, entradas/saídas na última hora e horário mais cheio das últimas 24h
-- 📈 Gráficos históricos de movimentação por hora do dia e por dia (janela de 30 dias)
-- 📜 Sistema de logs com níveis (INFO/WARN/ERROR), exportáveis em `.txt` e com expiração automática após 24h
-- ⚙️ Página de configuração para ajustar lotação máxima, intervalo de leitura dos sensores, cooldown e credenciais de Wi-Fi, tudo sem regravar o firmware
-- 📊 Painel de performance com uso de CPU, heap/PSRAM livres, tempo de execução (profiling) de cada rotina e stack mínimo de cada task do FreeRTOS
-- 💾 Persistência total em LittleFS — dados, gráficos e logs sobrevivem a reinicializações e quedas de energia
-- 📶 Wi-Fi resiliente: modo AP+STA simultâneo, com ponto de acesso de contingência sempre ativo
+- Contagem de pessoas em tempo real via sensores infravermelhos de passagem (entrada/saída)
+- Contagem redundante via catraca com encoder rotativo
+- Alertas sonoros (DFPlayer Mini) ao atingir 50% e 100% da lotação máxima
+- Display OLED local com rotação automática de telas (total, entradas, saídas, lotação)
+- Dashboard web com lotação atual, entradas/saídas na última hora e horário mais cheio das últimas 24h
+- Gráficos históricos de movimentação por hora do dia e por dia (janela de 30 dias)
+- Sistema de logs com níveis (INFO/WARN/ERROR), exportáveis em `.txt` e com expiração automática após 24h
+- Página de configuração para ajustar lotação máxima, intervalo de leitura dos sensores, cooldown e credenciais de Wi-Fi, tudo sem regravar o firmware
+- Painel de performance com uso de CPU, heap/PSRAM livres, tempo de execução (profiling) de cada rotina e stack mínimo de cada task do FreeRTOS
+- Persistência total em LittleFS — dados, gráficos e logs sobrevivem a reinicializações e quedas de energia
+- Wi-Fi resiliente: modo AP+STA simultâneo, com ponto de acesso de contingência sempre ativo
 
 ---
 
